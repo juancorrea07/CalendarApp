@@ -39,6 +39,8 @@ class Event:
 
     def __str__(self):
         return f"ID: {self.id} Event title: {self.title} Description: {self.description} Time: {self.start_at} - {self.end_at}"
+
+
 class Day:
 
     def __init__(self,date_: date):
@@ -56,4 +58,32 @@ class Day:
             if minute == 60:
                 minute = 0
                 hour += 1
+
+    def add_event(self, event_id: str, start_at: time, end_at: time):
+        current_hour = start_at.hour
+        current_minute = start_at.minute
+
+        while (current_hour, current_minute) < (end_at.hour, end_at.minute):
+            current_time = time(current_hour, current_minute)
+
+            if self.slots.get(current_time) is not None:
+                slot_not_available_error()
+                return
+
+            current_minute += 15
+            if current_minute == 60:
+                current_minute = 0
+                current_hour += 1
+
+        current_hour = start_at.hour
+        current_minute = start_at.minute
+
+        while (current_hour, current_minute) < (end_at.hour, end_at.minute):
+            current_time = time(current_hour, current_minute)
+            self.slots[current_time] = event_id
+
+            current_minute += 15
+            if current_minute == 60:
+                current_minute = 0
+                current_hour += 1
 
