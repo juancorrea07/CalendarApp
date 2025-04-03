@@ -36,3 +36,24 @@ class Event:
             self.reminders.pop(reminder_index)
         else:
             reminder_not_found_error()
+
+    def __str__(self):
+        return f"ID: {self.id} Event title: {self.title} Description: {self.description} Time: {self.start_at} - {self.end_at}"
+class Day:
+
+    def __init__(self,date_: date):
+        self.date_: date_
+        self.slots: dict[time, str | None]= {}
+
+    def _init_slots(self):
+        hour = 0
+        minute = 0
+        while hour < 24:
+            current_time = time(hour, minute)
+            self.slots[current_time] = None
+
+            minute += 15
+            if minute == 60:
+                minute = 0
+                hour += 1
+
